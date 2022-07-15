@@ -13,23 +13,25 @@ class FtxApi:
         self._api_key = api_key
         self._api_secret = api_secret
     
-    def _get(self, path: str) -> Any:
-        return self._request('GET', path)
+    def _get(self, path: str, ts: int = None) -> Any:
+        return self._request('GET', path, ts)
 
-    def _request(self, method: str, path: str) -> Any:
+    def _request(self, method: str, path: str, ts: int = None) -> Any:
         request = Request(method, self._URL + path)
-        self._sign_request(request)
+        self._sign_request(request, ts)
         response = self._session.send(request.prepare())
         return self._process_response(response)
     
-    def _sign_request(self, request: Request) -> None:
-        ts = int(time.time() * 1000) # milliseconds
+    def _sign_request(self, request: Request, ts: int = None) -> None:
+        if not ts:
+            ts = int(time.time())
+        ts_ms = ts * 1000 # milliseconds
         prepared = request.prepare()
-        payload = f'{ts}{prepared.method}{prepared.path_url}'.encode()
+        payload = f'{ts_ms}{prepared.method}{prepared.path_url}'.encode()
         signature = hmac.new(self._api_secret.encode(), payload, 'sha256').hexdigest()
         request.headers['FTX-KEY'] = self._api_key
         request.headers['FTX-SIGN'] = signature
-        request.headers['FTX-TS'] = str(ts)
+        request.headers['FTX-TS'] = str(ts_ms)
     
     def _process_response(self, response: Response) -> Any:
         try:
@@ -42,5 +44,11 @@ class FtxApi:
                 raise Exception(data['Error'])
             return data['result']
     
-    def get_all_futures(self) -> List[dict]:
-        return self._get('futures')
+    def get_markets(self) -> List[dict]:
+        return self._get('markets')
+    
+    def get_market(self, market_name: str = None) -> dict:
+        return self._get(f'markets/{market_name}')
+    
+    def get_market_at_ts(self, market_name: str = None, ts: int = None) -> dict:
+        return self._get(f'markets/{market_name}', ts)
