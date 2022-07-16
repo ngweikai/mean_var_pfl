@@ -1,5 +1,7 @@
 import ftx_api
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
 from datetime import datetime as dt
 
@@ -28,6 +30,36 @@ for crypto in portfolio:
         close_price.append(hourly_data['close'])
     hist_data[name] = pd.Series(close_price)
 
-print(hist_data.head())
-print(hist_data.tail())
-print(len(hist_data))
+mean_pct_ret = hist_data.pct_change().mean()
+print(mean_pct_ret)
+cov_matrix = hist_data.pct_change().cov()
+
+# portfolio simulations
+sim_count = 50000
+weights = np.zeros((sim_count, len(portfolio)))
+returns = np.zeros(sim_count)
+risks = np.zeros(sim_count)
+sharpe = np.zeros(sim_count)
+
+for i in range(sim_count):
+    # create random weights
+    w = np.random.random(len(portfolio))
+    w = w / np.sum(w)
+    weights[i] = w
+    # calculate returns
+    returns[i] = np.dot(mean_pct_ret, w)
+    # calculate risks
+    risks[i] = np.sqrt(np.dot(w.T, np.dot(cov_matrix, w)))
+    # sharpe ratio
+    sharpe[i] = returns[i] / risks[i]
+
+max_index = sharpe.argmax()
+print(weights[max_index])
+
+plt.figure(figsize=(16, 10))
+plt.scatter(risks, returns, c=sharpe)
+plt.xlabel('Portfolio Risk')
+plt.ylabel('Portfolio Return')
+plt.colorbar(label='Sharpe Ratio')
+plt.scatter(risks[max_index], returns[max_index], c='red')
+plt.show()
