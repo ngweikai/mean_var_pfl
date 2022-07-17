@@ -14,16 +14,17 @@ API_SECRET = 'k9_GENAHBzWb8S51MEc1YOXd31ILmaLSe7B_fsqz'
 portfolio = ['BTC', 'ETH', 'SOL']
 market_type = 'PERP'
 
-epoch = dt(1970, 1, 1, 0, 0, 0)
 start = dt(2022, 6, 1, 0, 0, 0)
 end = dt(2022, 7, 1, 23, 0, 0)
 
 # start.timestamp() returns GMT +8, not UTC
+epoch = dt(1970, 1, 1, 0, 0, 0)
 start_ts = int((start - epoch).total_seconds())
 end_ts = int((end - epoch).total_seconds())
 
 hist_data = pd.DataFrame()
 
+# this function is just to check if simulation is correct
 def get_data_from_yahoo(portfolio: list = None) -> None:
     for stock in portfolio:
         close_data = web.DataReader(stock, 'yahoo', start, end)['Close']
