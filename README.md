@@ -11,6 +11,20 @@ To begin, start a terminal session and navigate to the directory you wish to clo
 git clone https://github.com/ngweikai/mean_var_pfl.git
 ```
 
+After the repository has been cloned, navigate into the folder by running the command:
+```bash
+cd mean_var_pfl/
+```
+
+## Install dependencies
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install the following packages (one by one):
+```bash
+pip install matplotlib
+pip install numpy
+pip install pandas
+pip install pandas-datareader
+```
+
 ## Adjust the script parameters (Optional)
 Using an editor of your choice, open 'mean_var_opt.py' and change the following code snippet to your requirements:
 ```python

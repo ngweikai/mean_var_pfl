@@ -40,7 +40,7 @@ class FtxApi:
             raise
         else:
             if not data['success']:
-                raise Exception(data['Error'])
+                raise Exception(data['error'])
             return data['result']
     
     def get_hist_prices(
