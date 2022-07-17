@@ -44,12 +44,6 @@ class FtxApi:
                 raise Exception(data['Error'])
             return data['result']
     
-    def get_markets(self) -> List[dict]:
-        return self._get('markets')
-    
-    def get_market(self, market_name: str = None) -> dict:
-        return self._get(f'markets/{market_name}')
-    
     def get_hist_prices(
         self, market_name: str, resolution: int = 3600,
         start_time: int = None, end_time: int = None
