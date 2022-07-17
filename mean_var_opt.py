@@ -14,6 +14,7 @@ API_SECRET = 'k9_GENAHBzWb8S51MEc1YOXd31ILmaLSe7B_fsqz'
 portfolio = ['BTC', 'ETH', 'SOL']
 market_type = 'PERP'
 
+# datetime params: (year, month, day, hour, minute, second)
 start = dt(2022, 6, 1, 0, 0, 0)
 end = dt(2022, 7, 1, 23, 0, 0)
 
@@ -67,12 +68,19 @@ for _ in range(sim_count):
     sharpe.append(ret/risk)
 
 max_index = sharpe.index(max(sharpe))
-print(weights[max_index])
+opt_weights = weights[max_index]
+output = dict()
+for k, v in zip(portfolio, opt_weights):
+    output[k] = round(v, 7)
+
+msg = f'Optimal Weights: {output}'
+file_path = 'efficient_frontier.png'
 
 plt.figure(figsize=(16, 10))
 plt.scatter(risks, returns, c=sharpe)
+plt.title(msg, loc='center')
 plt.xlabel('Portfolio Risk')
 plt.ylabel('Portfolio Return')
 plt.colorbar(label='Sharpe Ratio')
 plt.scatter(risks[max_index], returns[max_index], c='red')
-plt.show()
+plt.savefig(file_path)
