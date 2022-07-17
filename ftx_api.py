@@ -4,7 +4,6 @@ import hmac
 from requests import Request, Response, Session
 from typing import Any, Dict, List, Optional
 
-
 class FtxApi:
     _URL = 'https://ftx.com/api/'
 

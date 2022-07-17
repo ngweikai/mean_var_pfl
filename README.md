@@ -47,6 +47,8 @@ msg = f'Optimal Weights: {output}'
 file_path = 'C:/Users/<user>/Desktop/efficient_frontier.png'
 ```
 
+If you just edit file_path = 'efficient_frontier.png', a .png file would be generated at your present working directory.
+
 ## Run the script
 After adjusting the script parameters and selecting the output location, execute the script with the following command:
 ```bash
