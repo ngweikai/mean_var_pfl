@@ -7,8 +7,9 @@ from datetime import datetime as dt
 import ftx_api
 
 # API key created on 'https://ftx.com/profile'
-API_KEY = 'LxIO7YyHJet0bVet36EVNv9ExkxjH3iqjOU9mNqq'
-API_SECRET = 'k9_GENAHBzWb8S51MEc1YOXd31ILmaLSe7B_fsqz'
+# Not required for GET requests
+API_KEY = ''
+API_SECRET = ''
 
 # portfolio = ['CEVA', 'GOOGL', 'TSLA', 'ZOM']
 portfolio = ['BTC', 'ETH', 'SOL']
@@ -73,7 +74,7 @@ output = dict()
 for k, v in zip(portfolio, opt_weights):
     output[k] = round(v, 7)
 
-msg = f'Optimal Weights: {output}'
+msg = f'Optimal Weights @ Red Dot: {output}'
 file_path = 'efficient_frontier.png'
 
 plt.figure(figsize=(16, 10))
